@@ -1,5 +1,3 @@
-package MultiLayerIR
-
 // The 'higher level' IR
 
 abstract class hIR_Expr

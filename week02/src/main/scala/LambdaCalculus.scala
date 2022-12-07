@@ -1,5 +1,3 @@
-//package LambdaCalculus
-
 abstract class lambda_Expr {
   def toString(): String
 }
@@ -37,10 +35,10 @@ def freeList(e: lambda_Expr): List[String] = e match {
 
 def nameList(e: lambda_Expr): List[String] = e match {
   case lambda_Name(n) => n :: Nil
-  case lambda_Function(head, body) => head :: freeList(body).filter(_ != head)
+  case lambda_Function(head, body) => head :: nameList(body).filter(_ != head)
   case lambda_Application(e1, e2) => {
-    val l1 = freeList(e1)
-    val l2 = freeList(e2)
+    val l1 = nameList(e1)
+    val l2 = nameList(e2)
     l1 ::: l2.filter(!l1.contains(_))
   }
 }

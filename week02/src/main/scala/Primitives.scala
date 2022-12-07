@@ -1,6 +1,8 @@
-
 // numbers
 val ZERO = lambda_Function("s", lambda_Function("z", lambda_Name("z")))
+val ONE = lambda_Function("s", lambda_Function("z", lambda_Application(lambda_Name("s"), lambda_Name("z"))))
+val TWO = lambda_Function("s", lambda_Function("z", lambda_Application(lambda_Name("s"),
+                                                                       lambda_Application(lambda_Name("s"), lambda_Name("z")))))
 
 def num_gen(number: Int): lambda_Expr = {
   def rec(n:Int, tmp: lambda_Expr): lambda_Expr = {
@@ -9,9 +11,6 @@ def num_gen(number: Int): lambda_Expr = {
   }
   cbv_driver(rec(number, ZERO))
 }
-
-val ONE = num_gen(1)
-val TWO = num_gen(2)
 
 // successor
 val S = lambda_Function("w", lambda_Function("y", lambda_Function("x", 
