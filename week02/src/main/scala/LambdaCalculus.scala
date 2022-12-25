@@ -132,18 +132,18 @@ def cbv_driver(e: lambda_Expr): lambda_Expr = e match {
 def expansion(e: lambda_Expr): lambda_Expr = e match {
   case lambda_Name(_) => e
   case lambda_Function(head, body) => lambda_Function(head, expansion(body))
-  case lambda_Application(lambda_Function(_, _), e2) => beta_reduc(e)
-  case lambda_Application(lambda_Application(sub1, sub2), e2) => 
-    lambda_Application(expansion(lambda_Application(sub1, sub2)), e2)
-  case lambda_Application(lambda_Name(n), e2) => 
-    lambda_Application(lambda_Name(n), expansion(e2))
+  case lambda_Application(e1: lambda_Function, e2) => beta_reduc(e)
+  case lambda_Application(e1: lambda_Application, e2) => 
+    lambda_Application(expansion(e1), e2)
+  case lambda_Application(e1: lambda_Name, e2) => 
+    lambda_Application(e1, expansion(e2))
 }
 
 // call-by-name
 def cbn_driver(e: lambda_Expr): lambda_Expr = {
   if isStucked(e) then e else e match {
     case lambda_Function(head, body) => lambda_Function(head, cbn_driver(body))
-    case lambda_Application(e1, e2) => cbn_driver(expansion(e))
+    case lambda_Application(_, _) => cbn_driver(expansion(e))
   }
 }
 
